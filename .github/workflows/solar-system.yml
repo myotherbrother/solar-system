@@ -15,27 +15,36 @@ env:
 jobs:
     unit-testing:
         name: Unit Testing
-        runs-on: ubuntu-latest
+        strategy:
+          matrix:
+            nodejs_version: [18, 20]
+            operating_system: [ubuntu-latest, macos-latest]
+            exclude: 
+              - nodejs_version: 18
+                operating_system: macos-latest
+        runs-on: ${{ matrix.operating_system}}
         steps:
         - name: Checkout Repository
           uses: actions/checkout@v6
 
-        - name: Setup NodeJS Version - 24
+        - name: Setup NodeJS Version - ${{ matrix.nodejs_version}}
           uses: actions/setup-node@v6
           with:
-            node-version: 24
+            node-version: ${{ matrix.nodejs_version}}
 
         - name: Install Dependencies
           run: npm install
 
         - name: Unit Testing
+          id: nodejs-unit-test-step
           run: npm test
           
         - name: Archive Test Result
+          if: steps.nodejs-unit-test-step.outcome == 'failure' || steps.nodejs-unit-test-step.outcome == 'success'
           uses: actions/upload-artifact@v7
           with:
             name: Mocha-Test-Result
-            path: unit-test-results.xml
+            path: test-results2.xml
             retention-days: 5
 
     code-coverage:
@@ -45,10 +54,10 @@ jobs:
         - name: checkout Repository
           uses: actions/checkout@v6
 
-        - name: Setup NodeJS Version - 24
+        - name: Setup NodeJS Version - 20
           uses: actions/setup-node@v6
           with:
-            node-version: 24
+            node-version: 20
 
         - name: Install Dependencies
           run: npm install
