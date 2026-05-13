@@ -41,10 +41,10 @@ jobs:
           
         - name: Archive Test Result
           if: steps.nodejs-unit-test-step.outcome == 'failure' || steps.nodejs-unit-test-step.outcome == 'success'
-          uses: actions/upload-artifact@v7
+          uses: actions/upload-artifact@v6
           with:
             name: Mocha-Test-Result
-            path: test-results2.xml
+            path: test-results.xml
             retention-days: 5
 
     code-coverage:
@@ -67,7 +67,7 @@ jobs:
           run: npm run coverage
           
         - name: Archive Test Result
-          uses: actions/upload-artifact@v7
+          uses: actions/upload-artifact@v6
           with:
             name: Code Coverage Result
             path: coverage
