@@ -30,7 +30,7 @@ jobs:
             node-version: ${{ matrix.nodejs_version}}
 
         - name: Cache NPM Dependencies
-          uses: actions/cache@v3
+          uses: actions/cache@v6
           with:
             path: node_modules
             key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
@@ -62,7 +62,7 @@ jobs:
             node-version: 24
         
         - name: Cache NPM Dependencies
-          uses: actions/cache@v3
+          uses: actions/cache@v6
           with:
             path: node_modules
             key: ${{ runner.os }}-node-modules-${{ hashFiles('package-lock.json') }}
