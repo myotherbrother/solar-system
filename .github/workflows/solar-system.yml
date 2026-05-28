@@ -48,7 +48,7 @@ jobs:
             retention-days: 5
 
     code-coverage:
-      name: Code Coverage
+      name: Code Coverage2
       runs-on: ubuntu-latest
       steps:
         - name: checkout Repository
