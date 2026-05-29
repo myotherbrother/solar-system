@@ -18,7 +18,7 @@ jobs:
         strategy:
           matrix:
             nodejs_version: [24]
-            operating_system: [ubuntu-latest, macos-latest]
+            operating_system: [ubuntu-latest]
         runs-on: ${{ matrix.operating_system}}
         steps:
         - name: Checkout Repository
@@ -80,6 +80,17 @@ jobs:
             name: Code Coverage Result
             path: coverage
             retention-days: 5
+
+    docker:
+      name: Continerization
+      needs: [unit-testing, code-coverage]
+      runs-on: ubuntu-latest
+      steps:
+        - name: Checkout Repo 
+          uses: actions/login-action@v4
+          with:
+            username: ${{ vars.DOCKERHUB_USERNAME}}
+            password: ${{ secrets.DOCKERHUB_PASSWORD}}
 
 
 
