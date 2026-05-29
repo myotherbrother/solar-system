@@ -93,7 +93,7 @@ jobs:
           uses: actions/login-action@v4
           with:
             username: ${{ vars.DOCKERHUB_USERNAME}}
-            password: ${{ secrets.DOCKERHUB_PASSWORD}}
+            password: ${{ secrets.DOCKERHUB_TOKEN}}
 
 
 
