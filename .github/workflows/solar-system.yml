@@ -116,7 +116,7 @@ jobs:
             echo $IP
 
             echo Testing Image URL usering wget
-            wqet -q -o - 127.0.0.1:3000/live | grep live 
+            wget -q -o - 127.0.0.1:3000/live | grep live 
 
 
 
