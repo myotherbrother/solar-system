@@ -84,6 +84,8 @@ jobs:
     docker:
       name: Continerization
       needs: [unit-testing, code-coverage]
+      permissions: 
+        packages: write
       runs-on: ubuntu-latest
       steps:
         - name: Checkout Repository
@@ -95,12 +97,19 @@ jobs:
             username: ${{ vars.DOCKERHUB_USERNAME}}
             password: ${{ secrets.DOCKERHUB_TOKEN}}
         
-        - name: Docker Build for Testing
-          uses: docker/build-push-action@v7
+        - name: GHCR login 
+          uses: docker/login-action@v4
           with:
-            context: . 
-            push: false
-            tags: ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha}}
+            registry: ghcr.io
+            username: ${{ github.repository_owner }}
+            password: ${{ secrets.GITHUB_TOKEN }}
+        
+        # - name: Docker Build for Testing
+        #   uses: docker/build-push-action@v7
+        #   with:
+        #     context: . 
+        #     push: false
+        #     tags: ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha}}
         
         # - name: Docker Image Testing
         #   run: |
@@ -118,13 +127,13 @@ jobs:
         #     echo Testing Image URL useing wget
         #     wget -q q - 172.0.0.1:3000/live | grep live 
 
-        - name: Docker Push
+        - name: Container Registry Push
           uses: docker/build-push-action@v7
           with:
             context: . 
             push: true
-            tags: ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha}}
-
-
-
-             
+            tags: | 
+              ${{ vars.DOCKERHUB_USERNAME }}/solar-system:${{ github.sha}}
+              ghcr.io/${{ github.repository_owner }}/solar-system:${{ github.sha }}
+        
+        
