@@ -115,7 +115,7 @@ jobs:
             export IP=$(docker inspect -f '{{range .NetworkSettings.Networks}}{{.IPAddress}}{{end}}' solar-system-app)
             echo $IP
 
-            echo Testing Image URL usering wget
+            echo Testing Image URL useing wget
             wget -q -o - 172.17.0.2:3000/live | grep live 
 
 

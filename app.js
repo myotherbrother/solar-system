@@ -11,12 +11,19 @@ app.use(bodyParser.json());
 app.use(express.static(path.join(__dirname, '/')));
 app.use(cors())
 
-mongoose.connect(process.env.MONGO_URI, {
-    user: process.env.MONGO_USERNAME,
-    pass: process.env.MONGO_PASSWORD
+mongoose.connect('mongodb+srv://supercluster.d83jj.mongodb.net/superData', {
+    user: 'superuser',
+    pass: 'SuperPassword'
 }).catch((err) =>{
         console.log("error!! " + err);
 });
+
+// mongoose.connect(process.env.MONGO_URI, {
+//     user: process.env.MONGO_USERNAME,
+//     pass: process.env.MONGO_PASSWORD
+// }).catch((err) =>{
+//         console.log("error!! " + err);
+// });
 
 var Schema = mongoose.Schema;
 
@@ -32,7 +39,7 @@ var planetModel = mongoose.model('planets', dataSchema);
 
 
 
-app.post('/planet',  async function(req, res) {
+app.post('/planet', async function(req, res) {
    // console.log("Received Planet ID " + req.body.id)
     try {
         const planetData = await planetModel.findOne({
