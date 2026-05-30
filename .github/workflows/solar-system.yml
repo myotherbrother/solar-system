@@ -33,10 +33,10 @@ jobs:
         - name: Checkout Repository
           uses: actions/checkout@v6
 
-        - name: Setup NodeJS Version - ${{ matrix.nodejs_version}}
-          uses: actions/setup-node@v6
-          with:
-            node-version: ${{ matrix.nodejs_version}}
+        # - name: Setup NodeJS Version - ${{ matrix.nodejs_version}}
+        #   uses: actions/setup-node@v6
+        #   with:
+        #     node-version: ${{ matrix.nodejs_version}}
 
         - name: Cache NPM Dependencies
           uses: actions/cache@v5
@@ -60,15 +60,26 @@ jobs:
 
     code-coverage:
       name: Code Coverage
+      container:
+        image: node:24
+      services:
+          mongo-db:
+            image: siddharth67/mongo-db:non-prod
+            options:
+              --name mongo 
+      env:
+        MONGO_URI: 'mongodb://mongo:27017/superData'
+        MONGO_USERNAME: non-prod-user
+        MONGO_PASSWORD: non-prod-password
       runs-on: ubuntu-latest
       steps:
         - name: checkout Repository
           uses: actions/checkout@v6
 
-        - name: Setup NodeJS Version - 24
-          uses: actions/setup-node@v6
-          with:
-            node-version: 24
+        # - name: Setup NodeJS Version - 24
+        #   uses: actions/setup-node@v6
+        #   with:
+        #     node-version: 24
         
         - name: Cache NPM Dependencies
           uses: actions/cache@v5
